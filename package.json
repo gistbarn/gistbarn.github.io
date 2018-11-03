@@ -1,0 +1,28 @@
+{
+  "name": "gistbarn.github.io",
+  "version": "1.0.0",
+  "description": "barn of gists",
+  "main": "index.js",
+  "dependencies": {
+    "brutalist-web": "^1.9.1",
+    "github-api": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "serve -p 8080"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gistbarn/gistbarn.github.io.git"
+  },
+  "keywords": [
+    "@dosy",
+    "gistbarn"
+  ],
+  "author": "@dosy",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/gistbarn/gistbarn.github.io/issues"
+  },
+  "homepage": "https://github.com/gistbarn/gistbarn.github.io#readme"
+}
