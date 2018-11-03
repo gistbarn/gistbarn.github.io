@@ -1,0 +1,7 @@
+- Do styles
+- Move markup into components
+- Write correct component functions and decide good data structures
+- Write an API file to provide functions to get data
+- Consider add an "async" to function and Promise awaire rendering to Brutal.
+
+
