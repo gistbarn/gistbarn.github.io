@@ -113,3 +113,9 @@ export async function getFeed(state) {
   }
   return feed;
 }
+
+export async function getPost(id) {
+  const gist = g.getGist(id);
+  const content = await gist.read();
+  return content.data;
+}
