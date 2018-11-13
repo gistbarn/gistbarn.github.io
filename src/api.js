@@ -36,8 +36,25 @@ export async function getProfile(state) {
   return profile;
 }
 
-export async function getGists(state) {
+export async function getMyGists(state) {
   const {data:gists} = await u.listGists();
   state.gists = gists;
   return gists;
+}
+
+export async function getItsGists(state, user) {
+  if ( ! state.userGists ) {
+    state.userGists = new Map();
+  } else if ( state.userGists.has(user) ) return state.userGists.get(user);
+  const {data:gists} = await g.getUser(user).listGists();
+  state.userGists.set(user, gists);
+  return gists;
+}
+
+export async function getFollowers(state) {
+  const {followers_url} = state.profileData;
+  const followers = await fetch(followers_url).then(r => r.json());
+  state.followers = followers;
+  console.log({followers});
+  return followers;
 }

@@ -1,8 +1,15 @@
 import {R,X} from '../../node_modules/brutalist-web/r.js';
+import browseUser from '../browseUser.js';
 
 export default function MyAuth(state) {
   return R`
-    <span class=username>${state.name}</span>
+    <span class=username>
+      <a 
+        click=${e => browseUser(e, state.name, state)} 
+        href=#browse-${state.name}>
+          ${state.name}
+      </a>
+    </span>
     <span class=logout><a click=${() => logout(state)} href=#logout>Logout</a></span>
   `;
 }

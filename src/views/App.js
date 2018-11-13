@@ -1,26 +1,31 @@
 import {R,X} from '../../node_modules/brutalist-web/r.js';
+import * as API from '../api.js';
 import MyAuth from './MyAuth.js';
 import PostList from './PostList.js';
-import Post from './Post.js';
+import NewPost from './NewPost.js';
+import browseUser from '../browseUser.js';
 
 export default function App(state) {
   return R`
     <article class="holygrail debug">
       <header>
-        <span class=heading>GistBarn</span>
+        <span class=heading><a href=/>GistBarn</a></span>
         <span class=auth>
           ${MyAuth(state)}
         </span>
       </header>
       <nav>
-        <header>Other things</header>
+        <header>Followers</header>
         <ul>
-          <li><a href=#post1>Link 1</a>
-          <li><a href=#post2>Link 2</a>
+          ${state.followers.map(f => R`${{key:f.node_id}}
+            <li>
+              <a href=#browse-${f.login} click=${e => browseUser(e, f.login, state)}>${f.login}</a>
+            </li>
+          `)}
         </ul>
       </nav>
       <article> 
-        ${Post(state)}
+        ${NewPost(state)}
         <section class="post-stream">
           ${PostList(state, {type:'gists'})}
         </section>
@@ -30,3 +35,4 @@ export default function App(state) {
     </article>
   `;
 }
+

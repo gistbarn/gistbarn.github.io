@@ -7,7 +7,10 @@ let retries = 5;
 
 export const appState = {
   name: 'anon',
+  currentFeed: ':feed'
 };
+
+Object.assign(self, {appState});
 
 start();
 
@@ -17,7 +20,8 @@ async function start() {
     AuthIn(appState).to('main.app', 'innerHTML');
   } else {
     appState.name = appState.profileData.login;
-    await API.getGists(appState);
+    await API.getFollowers(appState);
+    await API.getMyGists(appState);
     (await App(appState)).to('main.app', 'innerHTML');
   }
 }
