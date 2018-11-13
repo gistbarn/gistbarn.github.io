@@ -13,6 +13,9 @@ export async function login() {
   u = g.getUser();
   return {g,u};
 }
-export async function getProfile() {
-  return await u.getProfile();
+
+export async function getProfile(state) {
+  const profile = await u.getProfile();
+  state.name = profile.data.login;
+  return profile;
 }

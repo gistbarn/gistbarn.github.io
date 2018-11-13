@@ -21,6 +21,7 @@ async function start() {
     }
     appState.loggedIn = token;
   }
+  await API.getProfile(appState);
   (await App(appState)).to('main.app', 'innerHTML');
 }
 
