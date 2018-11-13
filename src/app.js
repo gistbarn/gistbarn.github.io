@@ -1,13 +1,17 @@
 import {R,X} from '../node_modules/brutalist-web/r.js';
+import AuthIn from './views/AuthIn.js';
 
 const appState = {
   name: 'anon',
-  loggedIn: getCode()
 };
 
 start();
 
 async function start() {
+  const code = getCode();
+  const {token} = await fetch(`https://gistbarn.herokuapp.com/authenticate/${code}`).then(r => r.json());
+  console.log({token});
+  appState.loggedIn = token;
   (await App(appState)).to('main.app', 'innerHTML');
 }
 
@@ -18,7 +22,7 @@ async function App(state) {
       <header>
         <span class=heading>Gistbarn</span>
         <section class=auth>
-          ${state.loggedIn? UserMenu(state) : LogIn(state)}
+          ${AuthIn(state)}
         </section>
       </header>
       <nav>
