@@ -1,5 +1,6 @@
 import {R,X} from '../node_modules/brutalist-web/r.js';
 import AuthIn from './views/AuthIn.js';
+import * as API from './api.js';
 
 const appState = {
   name: 'anon',
