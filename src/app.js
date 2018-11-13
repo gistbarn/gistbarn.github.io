@@ -1,12 +1,17 @@
 import {R,X} from '../node_modules/brutalist-web/r.js';
 
 const appState = {
+  name: 'anon',
   loggedIn: getCode()
 };
 
-App(appState).to('main.app', 'innerHTML');
+start();
 
-function App(state) {
+async function start() {
+  (await App(appState)).to('main.app', 'innerHTML');
+}
+
+async function App(state) {
   const s = Object.assign({}, state);
   return R`
     <article class="holygrail debug">
@@ -66,7 +71,7 @@ function Post(state) {
 }
 
 function UserMenu(state) {
-  return R`<span class=usermenu>${state.userMenu.name}</span>`;
+  return R`<span class=usermenu>${state.name}</span>`;
 }
 
 function LogIn(state) {
