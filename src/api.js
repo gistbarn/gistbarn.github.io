@@ -56,7 +56,6 @@ export async function getFollowers(state) {
   const {followers_url} = state.profileData;
   const followers = await fetch(followers_url).then(r => r.json());
   state.followers = followers;
-  console.log({followers});
   return followers;
 }
 
@@ -112,6 +111,5 @@ export async function getFeed(state) {
   if ( state ) {
     state.feed = feed;
   }
-  console.log({feed});
   return feed;
 }

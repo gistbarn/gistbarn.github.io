@@ -8,7 +8,6 @@ export default function PostList(state, {type, key}) {
   } else {
     list = state[type].get(key);
   }
-  console.log({list,type,key});
   return R`
     <link rel=stylesheet href=src/views/styles/PostList.css>
     <section class="postlist">
@@ -17,9 +16,12 @@ export default function PostList(state, {type, key}) {
         ${list.map(post => R`${{key:post.id}}
           <li>
             <section class="postsummary">
-              <header>${post.description || 'Untitled'}</header>
+              <header>
+                <a href=#readPost-${post.id} click=${e => readPost(e, post)}>
+                  ${post.description || 'Untitled'}
+                </a>
+              </header>
               <div class="postcontent">${Object.keys(post.files).join(', ')}</div>
-              <a href=#readPost-${post.id} click=${e => readPost(e, post)}>Read more</a>
               <a href=#browse-${post.owner.login} click=${e => browseUser(e, post.owner.login, state)}>${post.owner.login}</a>
               <time datetime="${post.updated_at}">${post.time_ago} ago</time>
             </section>
