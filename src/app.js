@@ -10,11 +10,14 @@ start();
 async function start() {
   const code = getCode();
   if ( ! code ) {
-    const token = localStorage.get('token');  
+    const token = localStorage.getItem('token');  
     appState.loggedIn = token;
   } else {
     const {token} = await fetch(`https://gistbarn.herokuapp.com/authenticate/${code}`).then(r => r.json());
     console.log({loggedIn:token});
+    if( !!token ) {
+      localStorage.setItem('token', token);
+    }
     appState.loggedIn = token;
   }
   (await App(appState)).to('main.app', 'innerHTML');
