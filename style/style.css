@@ -8,21 +8,37 @@
     margin: 0 auto;
     position: relative;
     display: table;
-    min-height: 100vh;
-    background: #eee;
+    min-height: 110vh;
+    background: #e9ebee;
     padding: 0 2em 5em 2em;
     box-sizing: border-box;
   }
 
 /* post styles */
-
-article.post:not(.edit) section.post.edit {
-  display: none;
-}
+  article.post:not(.edit) section.post.edit {
+    display: none;
+  }
 
 /* general semantic grid areas */
-  .holygrail header {
+  .holygrail > header {
+    display: flex;
+    align-items: center;
     grid-area: header;
+    background: #f5f6f7;
+    min-height: 2em;
+  }
+
+  .holygrail > header span {
+    margin: 0 0.5em;
+  }
+
+  .holygrail > header span a {
+    padding: 0.25em 0.35em;
+    display: inline-block; 
+  }
+
+  .holygrail > header span a:hover {
+    background: #deebee;
   }
 
   .holygrail footer {
@@ -40,11 +56,13 @@ article.post:not(.edit) section.post.edit {
   .holygrail article {
     grid-area: article;
     min-width: 18.5em;
+    width: 29em;
+    max-width: 90vw;
+    margin: 0 auto;
   }
 
 /* semantic responsive CSS-grid holygrail */
   article.debug.holygrail * {
-    outline: 1px solid lime;
     /*background: rgba(50,50,50,0.2);*/
   }
 
@@ -89,4 +107,29 @@ article.post:not(.edit) section.post.edit {
     article.holygrail aside {
       margin: 0;
     }
+  }
+
+/* grid area styles */
+  nav ul {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  nav ul li {
+    margin: 0 0 0.2em 0;
+    background: transparent;
+  }
+
+  nav ul li a {
+    display: inline-block;
+    width: 100%;
+    padding: 0.25em 0;
+  }
+
+  nav ul li:hover {
+    background: #f5f6f7;
+  }
+
+  nav header {
+    background: #f5f6f7;
   }

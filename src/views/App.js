@@ -30,8 +30,14 @@ export default function App(state) {
           ${PostList(state, {type:'gists'})}
         </section>
       </article>
-      <aside>Suggested things?</aside>
-      <footer>Footer</footer>
+      <aside>
+        <h1>Discover others</h1> 
+        <p>
+          Follow the followers of your followers, or the followers of those you follow.
+      </aside>
+      <footer>
+        Project of Dosycorp. "Gist", GitHub are marks of GitHub, Inc and its parents and subsidiaries. There is no relationship between GistBarn and these companies. 
+      </footer>
     </article>
   `;
 }
