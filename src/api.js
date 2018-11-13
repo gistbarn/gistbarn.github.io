@@ -3,6 +3,7 @@ let g, u;
 //test();
 
 async function test() {
+  console.log(await isLoggedIn());
   console.log(await load());
   console.log(await getProfile());
 }
@@ -13,7 +14,6 @@ export async function isLoggedIn(appState) {
   }
   try {
     const profile = await getProfile();
-    console.log({profileData:profile.data});
     appState.profileData = profile.data;
     return true;
   } catch(e) {
@@ -34,4 +34,10 @@ export async function getProfile(state) {
     state.name = profile.data.login;
   }
   return profile;
+}
+
+export async function getGists(state) {
+  const {data:gists} = await u.listGists();
+  state.gists = gists;
+  return gists;
 }

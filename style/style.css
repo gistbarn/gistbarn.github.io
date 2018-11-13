@@ -44,7 +44,7 @@ article.post:not(.edit) section.post.edit {
 /* semantic responsive CSS-grid holygrail */
   article.debug.holygrail * {
     outline: 1px solid lime;
-    background: rgba(50,50,50,0.2);
+    /*background: rgba(50,50,50,0.2);*/
   }
 
   article.holygrail {
@@ -75,7 +75,7 @@ article.post:not(.edit) section.post.edit {
         "article"
         "aside"
         "footer";
-      grid-template-columns: 1fe;
+      grid-template-columns: 1fr;
       grid-template-rows:
         auto
         minmax(5em, auto)

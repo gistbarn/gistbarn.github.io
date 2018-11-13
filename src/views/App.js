@@ -1,5 +1,6 @@
 import {R,X} from '../../node_modules/brutalist-web/r.js';
 import MyAuth from './MyAuth.js';
+import PostList from './PostList.js';
 import Post from './Post.js';
 
 export default function App(state) {
@@ -12,21 +13,19 @@ export default function App(state) {
         </span>
       </header>
       <nav>
-        <header>Other posts</header>
+        <header>Other things</header>
         <ul>
-          <li><a href=#post1>Post 1</a>
-          <li><a href=#post2>Post 2</a>
+          <li><a href=#post1>Link 1</a>
+          <li><a href=#post2>Link 2</a>
         </ul>
       </nav>
       <article> 
         ${Post(state)}
         <section class="post-stream">
-          ${Post(state)}
-          ${Post(state)}
-          ${Post(state)}
+          ${PostList(state, {type:'gists'})}
         </section>
       </article>
-      <aside>Suggested posts?</aside>
+      <aside>Suggested things?</aside>
       <footer>Footer</footer>
     </article>
   `;

@@ -17,6 +17,7 @@ async function start() {
     AuthIn(appState).to('main.app', 'innerHTML');
   } else {
     appState.name = appState.profileData.login;
+    await API.getGists(appState);
     (await App(appState)).to('main.app', 'innerHTML');
   }
 }
