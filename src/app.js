@@ -9,9 +9,14 @@ start();
 
 async function start() {
   const code = getCode();
-  const {token} = await fetch(`https://gistbarn.herokuapp.com/authenticate/${code}`).then(r => r.json());
-  console.log({token});
-  appState.loggedIn = token;
+  if ( ! code ) {
+    const token = localStorage.get('token');  
+    appState.loggedIn = token;
+  } else {
+    const {token} = await fetch(`https://gistbarn.herokuapp.com/authenticate/${code}`).then(r => r.json());
+    console.log({loggedIn:token});
+    appState.loggedIn = token;
+  }
   (await App(appState)).to('main.app', 'innerHTML');
 }
 
@@ -74,16 +79,10 @@ function Post(state) {
   `;
 }
 
-function UserMenu(state) {
-  return R`<span class=usermenu>${state.name}</span>`;
-}
-
-function LogIn(state) {
-  return R`<span class=loginmenu><button class=login>Login</button></span>`;
-}
-
 function getCode() {
-  const code = window.location.search.match(/\?code=(.*)/)[1];
-  console.log({loggedIn:code});
-  return code;
+  try {
+    const code = window.location.search.match(/\?code=(.*)/)[1];
+    console.log({tempCode:code});
+    return code;
+  } catch(e) { return null; }
 }
