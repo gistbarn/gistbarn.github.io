@@ -1,6 +1,10 @@
 import {R,X} from '../node_modules/brutalist-web/r.js';
 
-App({}).to('main.app', 'innerHTML');
+const appState = {
+  loggedIn: getCode()
+};
+
+App(appState).to('main.app', 'innerHTML');
 
 function App(state) {
   const s = Object.assign({}, state);
@@ -67,4 +71,10 @@ function UserMenu(state) {
 
 function LogIn(state) {
   return R`<span class=loginmenu><button class=login>Login</button></span>`;
+}
+
+function getCode() {
+  const code = window.location.search.match(/\?code=(.*)/)[1];
+  console.log({loggedIn:code});
+  return code;
 }
