@@ -1,5 +1,5 @@
 import {R,X} from '../../node_modules/brutalist-web/r.js';
-import AuthIn from './AuthIn.js';
+import MyAuth from './MyAuth.js';
 import Post from './Post.js';
 
 export default function App(state) {
@@ -8,7 +8,7 @@ export default function App(state) {
       <header>
         <span class=heading>Gistbarn</span>
         <span class=auth>
-          ${AuthIn(state)}
+          ${MyAuth(state)}
         </span>
       </header>
       <nav>
