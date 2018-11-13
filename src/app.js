@@ -15,6 +15,8 @@ Object.assign(self, {appState});
 start();
 
 async function start() {
+  // don't support routing (yet)
+  location.hash = '';
   const isLoggedIn = await API.isLoggedIn(appState);
   if ( !isLoggedIn ) {
     AuthIn(appState).to('main.app', 'innerHTML');
