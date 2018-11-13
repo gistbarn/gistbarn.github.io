@@ -7,7 +7,7 @@ export default function App(state) {
   return R`
     <article class="holygrail debug">
       <header>
-        <span class=heading>Gistbarn</span>
+        <span class=heading>GistBarn</span>
         <span class=auth>
           ${MyAuth(state)}
         </span>

@@ -1,4 +1,9 @@
 import App from '../src/views/App.js';
 
-App().to('.test', 'replace');
+const state = {
+  isLoggedIn: true,
+  name: 'testuser'
+};
+
+App(state).to('.test', 'replace');
 
