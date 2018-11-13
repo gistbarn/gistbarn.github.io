@@ -13,12 +13,12 @@ export default function NewPost(state) {
             <button class=post>Post</button>
         </section>
       </article>
-      ` : R`<h1>posts</h1>`
+      ` : R`<h1>${state.currentFeed}'s posts</h1>`
    }`;
 }
 
 function showNewPost(state) {
-  if ( ! state.currentFeed || state.currentFeed == ':me' || state.currentFeed == ':feed' || state.currentFeed == state.name ) {
+  if ( ! state.currentFeed || state.currentFeed == ':feed' || state.currentFeed == state.name ) {
     return true;
   } else return false;
 }
