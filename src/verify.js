@@ -19,7 +19,7 @@
     if ( ! token ) {
       document.body.insertAdjacentHTML('beforeEnd', '<p><strong>An error occurred. Redirecting...</strong>');
     }
-    //setTimeout( () => location.href = '/', 500 );
+    setTimeout( () => location.href = '/', 500 );
   }
 
   function getCode() {

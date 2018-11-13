@@ -21,24 +21,25 @@ article.post:not(.edit) section.post.edit {
 }
 
 /* general semantic grid areas */
-  header {
+  .holygrail header {
     grid-area: header;
   }
 
-  footer {
+  .holygrail footer {
     grid-area: footer;
   }
 
-  nav {
+  .holygrail nav {
     grid-area: nav;
   }
 
-  aside {
+  .holygrail aside {
     grid-area: aside;
   }
 
-  article {
+  .holygrail article {
     grid-area: article;
+    min-width: 18.5em;
   }
 
 /* semantic responsive CSS-grid holygrail */
