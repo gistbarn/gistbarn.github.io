@@ -7,7 +7,7 @@ export default function Post(post) {
       <ul>
         ${Object.values(post.files).map(file => X`
         <li>
-          <header>${file.filename}</header>
+          <header>${file.filename !== 'post.md' ? file.filename : ''}</header>
           <section class=content>
             <pre>${R.skip((console.log(file.content),file.content))}</pre>
           </section> 

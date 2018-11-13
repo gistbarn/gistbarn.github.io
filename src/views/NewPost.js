@@ -1,4 +1,5 @@
 import {R,X} from '../../node_modules/brutalist-web/r.js';
+import {newPost} from '../api.js';
 
 export default function NewPost(state) {
   return R`${
@@ -6,11 +7,11 @@ export default function NewPost(state) {
       <div class=newpost>
         <h1>${state.currentFeed !== state.name ? "My feed" : "My posts" }</h1>
         <article class="post view edit">
-          <section class="post edit">
+          <form submit=${e => (e.preventDefault(), newPost(e, state))} action=#post class="post edit">
             <p>
-              <input name=tags placeholder=tags> 
+              <input required name=description placeholder=description> 
             <p>
-              <textarea name=post class="markdown live-mode"></textarea>
+              <textarea required placeholder="What do you want to say?" name=content></textarea>
             <p>
               <button class=post>Post</button>
           </section>

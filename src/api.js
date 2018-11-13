@@ -63,8 +63,23 @@ export async function getPeopleToFollow(state) {
   // this is costly so we cache it
 }
 
-export async function newPost(state) {
-
+export async function newPost(submitEvent, state) {
+  const form = submitEvent.target;
+  const Gist = g.getGist();
+  const obj = {
+    description: form.description.value,
+    public: true,
+    files: {
+      ['post.md']: {
+        filename: 'post.md',
+        content: form.content.value
+      }
+    }
+  };
+  console.log({obj});
+  const gist = await Gist.create(obj);
+  form.reset();
+  return gist;
 }
 
 export function sortPostsByMostRecent(posts) {

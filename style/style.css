@@ -19,6 +19,12 @@
     display: none;
   }
 
+  article.post pre {
+    overflow-x:auto;
+    max-height: 200vh;
+    overflow-y:auto;
+  }
+
 /* general semantic grid areas */
   .holygrail > header {
     display: flex;
