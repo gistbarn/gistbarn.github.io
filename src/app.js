@@ -1,6 +1,9 @@
 import {R,X} from '../node_modules/brutalist-web/r.js';
-import AuthIn from './views/AuthIn.js';
 import * as API from './api.js';
+import AuthIn from './views/AuthIn.js';
+import App from './views/App.js';
+
+let retries = 5;
 
 const appState = {
   name: 'anon',
@@ -10,78 +13,31 @@ start();
 
 async function start() {
   const code = getCode();
-  if ( ! code ) {
+  if ( ! code || code == 'logout' ) {
     const token = localStorage.getItem('token');  
     appState.loggedIn = token;
+    if ( ! token ) return AuthIn({}).to('main.app', 'innerHTML');
   } else {
     const {token} = await fetch(`https://gistbarn.herokuapp.com/authenticate/${code}`).then(r => r.json());
     console.log({loggedIn:token});
     if( !!token ) {
       localStorage.setItem('token', token);
+    } else {
+      return AuthIn({}).to('main.app', 'innerHTML');
     }
     appState.loggedIn = token;
   }
-  await API.getProfile(appState);
+  try {
+    await API.getProfile(appState);
+  } catch(e) {
+    if ( retries-- ) return AuthIn({}).to('main.app', 'innerHTML'); 
+    else return console.error("Stopping", e);
+    return;
+  }
+  const newURL = new URL(location.href);
+  newURL.search = '';
+  history.pushState({}, "Gistbarn | LoggedIn", newURL);
   (await App(appState)).to('main.app', 'innerHTML');
-}
-
-async function App(state) {
-  const s = Object.assign({}, state);
-  return R`
-    <article class="holygrail debug">
-      <header>
-        <span class=heading>Gistbarn</span>
-        <section class=auth>
-          ${AuthIn(state)}
-        </section>
-      </header>
-      <nav>
-        <header>Other posts</header>
-        <ul>
-          <li><a href=#post1>Post 1</a>
-          <li><a href=#post2>Post 2</a>
-        </ul>
-      </nav>
-      <article> 
-        ${Post(s)}
-        <section class="post-stream">
-          ${Post(s)}
-          ${Post(s)}
-          ${Post(s)}
-        </section>
-      </article>
-      <aside>Suggested posts?</aside>
-      <footer>Footer</footer>
-    </article>
-  `;
-}
-
-function Post(state) {
-  const s = Object.assign({}, state);
-  s.key = Math.random();
-  return R`
-    <article ${s} class="post view">
-      <section class="post">
-        <header>Post title</header>
-        <section class="post paragraphs">
-          <p>First para
-          <p>Second para
-        </section>
-        <footer>
-          <time>Post date</time>
-          <author>Post author</author>
-        </footer>
-      </section>
-      <section class="post edit">
-        <p>
-          <input name=tags placeholder=tags> 
-        <p>
-          <textarea name=post class="markdown live-mode"></textarea>
-        <p>
-          <button class=post>Post</button>
-      </section>
-    </article>
-  `;
 }
 
 function getCode() {
