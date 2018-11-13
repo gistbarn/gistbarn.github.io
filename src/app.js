@@ -22,6 +22,7 @@ async function start() {
     appState.name = appState.profileData.login;
     await API.getFollowers(appState);
     await API.getMyGists(appState);
+    await API.getFeed(appState);
     (await App(appState)).to('main.app', 'innerHTML');
   }
 }

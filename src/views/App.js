@@ -9,7 +9,10 @@ export default function App(state) {
   return R`
     <article class="holygrail debug">
       <header>
-        <span class=heading><a href=/>GistBarn</a></span>
+        <span class=heading><a href=#feed click=${() => {
+          state.currentFeed = ':feed';
+          App(state);
+        }}>GistBarn</a></span>
         <span class=auth>
           ${MyAuth(state)}
         </span>
@@ -27,7 +30,7 @@ export default function App(state) {
       <article> 
         ${NewPost(state)}
         <section class="post-stream">
-          ${PostList(state, {type:'gists'})}
+          ${PostList(state, {type:'feed'})}
         </section>
       </article>
       <aside>

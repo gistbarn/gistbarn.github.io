@@ -1,4 +1,5 @@
 import {R,X} from '../../node_modules/brutalist-web/r.js';
+import browseUser from '../browseUser.js';
 
 export default function PostList(state, {type, key}) {
   let list;
@@ -16,9 +17,11 @@ export default function PostList(state, {type, key}) {
         ${list.map(post => R`${{key:post.id}}
           <li>
             <section class="postsummary">
-              <header>${post.description}</header>
+              <header>${post.description || 'Untitled'}</header>
               <div class="postcontent">${Object.keys(post.files).join(', ')}</div>
               <a href=#readPost-${post.id} click=${e => readPost(e, post)}>Read more</a>
+              <a href=#browse-${post.owner.login} click=${e => browseUser(e, post.owner.login, state)}>${post.owner.login}</a>
+              <time datetime="${post.updated_at}">${post.time_ago} ago</time>
             </section>
           </li>
         `)}

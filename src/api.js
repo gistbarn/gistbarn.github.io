@@ -46,7 +46,8 @@ export async function getItsGists(state, user) {
   if ( ! state.userGists ) {
     state.userGists = new Map();
   } else if ( state.userGists.has(user) ) return state.userGists.get(user);
-  const {data:gists} = await g.getUser(user).listGists();
+  const {data:gists} = await g.getUser(user).listGists();	
+  sortPostsByMostRecent(gists);
   state.userGists.set(user, gists);
   return gists;
 }
@@ -57,4 +58,60 @@ export async function getFollowers(state) {
   state.followers = followers;
   console.log({followers});
   return followers;
+}
+
+export async function getPeopleToFollow(state) {
+  // this is costly so we cache it
+}
+
+export async function newPost(state) {
+
+}
+
+export function sortPostsByMostRecent(posts) {
+  posts.forEach(p => {
+    const pdate = new Date(p.updated_at);
+    p.time = pdate.getTime();
+    p.time_ago = timeAgo(pdate);
+  });
+  posts.sort((a,b) => b.time - a.time);
+  return posts;
+}
+
+export function timeAgo(date) {
+	var seconds = Math.floor((new Date() - date) / 1000);
+
+	var interval = Math.floor(seconds / 31536000);
+
+	if (interval > 1) {
+		return interval + " years";
+	}
+	interval = Math.floor(seconds / 2592000);
+	if (interval > 1) {
+		return interval + " months";
+	}
+	interval = Math.floor(seconds / 86400);
+	if (interval > 1) {
+		return interval + " days";
+	}
+	interval = Math.floor(seconds / 3600);
+	if (interval > 1) {
+		return interval + " hours";
+	}
+	interval = Math.floor(seconds / 60);
+	if (interval > 1) {
+		return interval + " minutes";
+	}
+	return Math.floor(seconds) + " seconds";
+}
+
+export async function getFeed(state) {
+  const feed = [];
+  await Promise.all(state.followers.map(async ({login}) => feed.push(...(await getItsGists(state, login)))));
+  sortPostsByMostRecent(feed);
+  if ( state ) {
+    state.feed = feed;
+  }
+  console.log({feed});
+  return feed;
 }
