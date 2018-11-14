@@ -12,7 +12,7 @@ export default function Discover(state) {
         ${state.discover ? state.discover.map(login => R`${{key:login}}
           <li>
             <a href=#follow-${login} click=${async e => {
-              followUser(login, state);
+              await followUser(login, state);
               App(state);
             }}>${login}</a>
           </li>

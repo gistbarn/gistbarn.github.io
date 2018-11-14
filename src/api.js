@@ -38,8 +38,12 @@ export async function getProfile(state) {
   return profile;
 }
 
-export async function getMyGists(state) {
-  const {data:gists} = await u.listGists();
+export async function getMyGists(state, {memory: memory = false} = {}) {
+  let {data:gists} = await u.listGists();
+  if ( ! memory ) {
+    const key = getMemoryKey(state);
+    gists = gists.filter(g => g.description !== key);
+  }
   state.gists = gists;
   return gists;
 }
@@ -101,8 +105,8 @@ export async function newPost(submitEvent, state) {
     description: form.description.value,
     public: true,
     files: {
-      ['post.md']: {
-        filename: 'post.md',
+      ['barn.md']: {
+        filename: 'barn.md',
         content: form.content.value
       }
     }
@@ -195,7 +199,7 @@ export async function getMemory(state) {
     return {memory:state.memory, memoryGist:state.memoryGist};
   }
   try {
-    const gists = await getMyGists(state);
+    const gists = await getMyGists(state, {memory:true});
     const description = getMemoryKey(state);
     let memoryGistItem = gists.find(g => g.description == description);
     const memoryGist = g.getGist(memoryGistItem.id);
