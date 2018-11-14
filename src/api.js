@@ -43,16 +43,24 @@ export async function getMyGists(state, {memory: memory = false} = {}) {
   if ( ! memory ) {
     const key = getMemoryKey(state);
     gists = gists.filter(g => g.description !== key);
+    state.gists = gists;
   }
-  state.gists = gists;
   return gists;
 }
 
 export async function getItsGists(state, user) {
+
   if ( ! state.userGists ) {
     state.userGists = new Map();
   } else if ( state.userGists.has(user) ) return state.userGists.get(user);
-  const {data:gists} = await g.getUser(user).listGists();	
+
+  let gists;
+  if ( state.name == user ) {
+    gists = await getMyGists(state);
+  } else {
+    ({data:gists} = await g.getUser(user).listGists());
+  }
+
   sortPostsByMostRecent(gists);
   state.userGists.set(user, gists);
   return gists;
@@ -62,6 +70,7 @@ export async function getBaseFollowers(state) {
   const {followers_url} = state.profileData;
   const followers = await fetch(followers_url).then(r => r.json());
   state.followers = followers;
+  followers.unshift(state.profileData);
   return followers;
 }
 

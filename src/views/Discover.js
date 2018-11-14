@@ -6,8 +6,6 @@ export default function Discover(state) {
   return R`
     <div class=discover>
       <h1>Discover others</h1> 
-      <p>
-        Follow the followers of your followers, or the followers of those you follow.
       <ul>
         ${state.discover ? state.discover.map(login => R`${{key:login}}
           <li>
