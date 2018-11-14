@@ -1,3 +1,5 @@
+const FEED_EXPIRY = 60*1000*2;
+
 let g, u;
 
 //test();
@@ -60,7 +62,21 @@ export async function getFollowers(state) {
 }
 
 export async function getPeopleToFollow(state) {
-  // this is costly so we cache it
+  if ( !! state.discover ) {
+    return state.discover;
+  }
+  if ( ! state.followers ) {
+    await getFollowers(state);
+  } 
+  const discover = new Set();
+  await Promise.all(state.followers.map(async f => {
+    const {following_url} = f;
+    const source = following_url.slice(0, following_url.indexOf('{'));
+    const following = await fetch(source).then(resp => resp.json());
+    following.forEach(f => discover.add(f.login));
+  }));
+  state.discover = [...discover.values()];
+  return state.discover;
 }
 
 export async function newPost(submitEvent, state) {
@@ -120,11 +136,15 @@ export function timeAgo(date) {
 }
 
 export async function getFeed(state) {
+  if ( state && state.feed && ((Date.now() - state.feed.updated) < FEED_EXPIRY) ) {
+    return state.feed;
+  }
   const feed = [];
   await Promise.all(state.followers.map(async ({login}) => feed.push(...(await getItsGists(state, login)))));
   sortPostsByMostRecent(feed);
   if ( state ) {
     state.feed = feed;
+    state.feed.updated = Date.now();
   }
   return feed;
 }

@@ -1,5 +1,6 @@
 import {R,X} from '../node_modules/brutalist-web/r.js';
 import * as API from './api.js';
+import Discover from './views/Discover.js';
 import AuthIn from './views/AuthIn.js';
 import App from './views/App.js';
 
@@ -24,7 +25,13 @@ async function start() {
     appState.name = appState.profileData.login;
     await API.getFollowers(appState);
     await API.getMyGists(appState);
-    await API.getFeed(appState);
+    API.getFeed(appState).then(() => {
+      appState.currentFeed = ':feed';
+      App(appState);
+    });
+    API.getPeopleToFollow(appState).then(() => {
+      Discover(appState);
+    });
     (await App(appState)).to('main.app', 'innerHTML');
   }
 }

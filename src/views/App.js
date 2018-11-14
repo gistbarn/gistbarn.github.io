@@ -3,6 +3,7 @@ import * as API from '../api.js';
 import MyAuth from './MyAuth.js';
 import PostList from './PostList.js';
 import NewPost from './NewPost.js';
+import Discover from './Discover.js';
 import browseUser from '../browseUser.js';
 
 export default function App(state) {
@@ -34,9 +35,7 @@ export default function App(state) {
         </section>
       </article>
       <aside>
-        <h1>Discover others</h1> 
-        <p>
-          Follow the followers of your followers, or the followers of those you follow.
+        ${Discover(state)}
       </aside>
       <footer>
         Project of Dosycorp. "Gist", GitHub are marks of GitHub, Inc and its parents and subsidiaries. There is no relationship between GistBarn and these companies. 
