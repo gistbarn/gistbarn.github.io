@@ -1,4 +1,5 @@
 import {R,X} from '../../node_modules/brutalist-web/r.js';
+import App from './App.js';
 import {followUser} from '../api.js';
 
 export default function Discover(state) {
@@ -7,6 +8,16 @@ export default function Discover(state) {
       <h1>Discover others</h1> 
       <p>
         Follow the followers of your followers, or the followers of those you follow.
+      <ul>
+        ${state.discover ? state.discover.map(login => R`${{key:login}}
+          <li>
+            <a href=#browse-${login} click=${async e => {
+              followUser(login, state);
+              App(state);
+            }}>${login}</a>
+          </li>
+        `) : R`<p>Getting your discovery list...</p>` }
+      </ul>
     </div>
   `;
 }

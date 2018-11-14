@@ -54,9 +54,24 @@ export async function getItsGists(state, user) {
   return gists;
 }
 
-export async function getFollowers(state) {
+export async function getBaseFollowers(state) {
   const {followers_url} = state.profileData;
   const followers = await fetch(followers_url).then(r => r.json());
+  state.followers = followers;
+  return followers;
+}
+
+export async function getFollowers(state) {
+  if ( state.followers && state.followers.length ) {
+    return state.followers;
+  }
+  const {memory} = await getMemory(state);
+  let followers = memory.followers;
+  if ( ! followers || ! followers.length ) {
+    followers = await getBaseFollowers(state);
+    memory.followers = followers;
+    await writeMemory(state, memory);
+  }
   state.followers = followers;
   return followers;
 }
@@ -153,4 +168,71 @@ export async function getPost(id) {
   const gist = g.getGist(id);
   const content = await gist.read();
   return content.data;
+}
+
+export async function followUser(login, state) {
+  const user = await g.getUser(login);
+  const {memory} = await getMemory(state);
+  let followers = memory.followers;
+  if ( ! followers ) {
+    followers = await getFollowers(state);
+    memory.followers = followers;
+  }
+  state.followers = followers;
+  followers.unshift(user);
+  await writeMemory(state, memory);
+  return user;
+}
+
+export function getMemoryKey(state) {
+  const description = `[gistbarn][${state.name}][memory]`;
+  return description;
+}
+
+export async function getMemory(state) {
+  if ( state.memory && state.memoryGist ) {
+    return {memory:state.memory, memoryGist:state.memoryGist};
+  }
+  try {
+    const gists = getMyGists(state);
+    const description = getMemoryKey(state);
+    let memoryGistItem = gists.find(g => g.description == description);
+    const memoryGist = g.getGist(memoryGistItem.id);
+    const memoryGistContent = await memoryGist.read();
+    const memory = JSON.parse(memoryGistContent.files['memory.json'].content);
+    const retVal = {memoryGist, memory};
+    Object.assign(state, retVal);
+    return retVal;
+  } catch(e) {
+    console.warn(e);
+    return null;
+  }
+}
+
+export async function writeMemory(state, newMemory) {
+  let {memory,memoryGist} = await getMemory(state);
+  if ( ! memory || ! memoryGist ) {
+    memory = {};
+    memoryGist = g.getGist();
+    memoryGist = await memoryGist.create({
+      description: getMemoryKey(state),
+      files: {
+        ['memory.json']: {
+          filename: 'memory.json',
+          content: JSON.stringify(memory)
+        }
+      }
+    });
+  }
+  Object.assign(memory, newMemory);
+  memoryGist = await memoryGist.update({
+    description: getMemoryKey(state),
+    files: {
+      ['memory.json']: {
+        filename: 'memory.json',
+        content: JSON.stringify(memory)
+      }
+    }
+  });
+  return {memory, memoryGist};
 }
