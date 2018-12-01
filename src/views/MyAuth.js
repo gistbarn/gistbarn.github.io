@@ -3,7 +3,6 @@ import browseUser from '../browseUser.js';
 
 export default function MyAuth(state) {
   return R`
-    <span class=myauth>
       <span class=username>
         <a 
           click=${e => browseUser(e, state.name, state)} 
@@ -12,7 +11,6 @@ export default function MyAuth(state) {
         </a>
       </span>
       <span class=logout><a click=${() => logout(state)} href=#logout>Logout</a></span>
-    </span>
   `;
 }
 

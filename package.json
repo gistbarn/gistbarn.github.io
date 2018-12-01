@@ -4,7 +4,7 @@
   "description": "barn of gists",
   "main": "index.js",
   "dependencies": {
-    "brutalist-web": "^1.9.1",
+    "brutalist-web": "^1.9.3",
     "github-api": "^3.0.0"
   },
   "devDependencies": {},
